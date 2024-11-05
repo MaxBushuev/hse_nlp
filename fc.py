@@ -6,6 +6,7 @@ from torch.nn import functional as F
 from torch.autograd import Variable
 from datasets import load_dataset
 from tqdm import tqdm
+from matplotlib import pyplot as plt
 
 
 class Net(nn.Module):
@@ -81,7 +82,7 @@ def main():
 
     model = Net(vocab_size=len(charlist), 
                         hidden_size=512, 
-                        n_layers=5, 
+                        n_layers=2, 
                         dropout=0.3,
                         embed_size=64)
     
@@ -91,7 +92,12 @@ def main():
     steps  = int(len(ds["train"])/batch_size*epochs)
     print_step = steps/10
 
+    train_step_x = []
+    loss_y = []
+    val_step_x = []
+    val_accs_y = []
     for step in tqdm(range(steps)):
+        train_step_x.append(step)
         model.train()
         model.cuda()
         model.zero_grad()
@@ -107,6 +113,8 @@ def main():
         loss = criterion(output, target_tensor)
         loss.backward()
         optimizer.step()
+
+        loss_y.append(loss.detach().numpy())
 
         if step % print_step:
             continue
@@ -130,5 +138,10 @@ def main():
 
         print(f"{loss=}")
         print(f"{accuracy=}")
+
+    plt.plot(train_step_x, loss_y, label="loss")
+    # plt.plot(val_step_x, val_accs_y, label="accuracy")
+    plt.legend()
+    plt.savefig("./assets/fc_hs_512.jpg")
 
 main()

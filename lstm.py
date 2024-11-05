@@ -7,6 +7,7 @@ from torch.nn import functional as F
 from torch.autograd import Variable
 from datasets import load_dataset
 from tqdm import tqdm
+from matplotlib import pyplot as plt
 
 
 class RNN(nn.Module):
@@ -97,8 +98,8 @@ def main():
     charlist = sorted(set(charlist))
 
     model = RNN(vocab_size=len(charlist), 
-                        hidden_size=32, 
-                        n_layers=5, 
+                        hidden_size=64, 
+                        n_layers=2, 
                         dropout=0.3,
                         embed_size=64)
     
@@ -108,7 +109,13 @@ def main():
     steps  = int(len(ds["train"])/batch_size*epochs)
     print_step = steps/10
 
+    train_step_x = []
+    loss_y = []
+    val_step_x = []
+    val_accs_y = []
     for step in tqdm(range(steps)):
+        train_step_x.append(step)
+
         model.train()
         model.hidden = model.init_hidden(batch_size)
         model.cuda()
@@ -124,10 +131,14 @@ def main():
         loss.backward()
         optimizer.step()
 
+        loss_y.append(loss.detach().numpy())
+
         if step % print_step:
             continue
 
         model.eval()
+
+        val_step_x.append(step)
 
         correct = 0
 
@@ -143,8 +154,14 @@ def main():
                 correct += 1
 
         accuracy = correct/len(preds)
+        val_accs_y.append(accuracy)
 
         print(f"{loss=}")
         print(f"{accuracy=}")
+
+    plt.plot(train_step_x, loss_y, label="loss")
+    # plt.plot(val_step_x, val_accs_y, label="accuracy")
+    plt.legend()
+    plt.savefig("./assets/lstm_hidden_size_64.jpg")
 
 main()
