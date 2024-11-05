@@ -26,13 +26,19 @@
 
 ## Models training
 ### Fully-Connected
-[FC 2 layers, hidden size 128](assets/fc_2_layers.jpg)
-[FC 5 layers, hidden size 128](assets/fc_5_layers.jpg)
-[FC 2 layers, hidden size 512](assets/fc_hs_512.jpg)
+#### FC 2 layers, hidden size 128
+![FC 2 layers, hidden size 128](assets/fc_2_layers.jpg)
+#### FC 5 layers, hidden size 128
+![FC 5 layers, hidden size 128](assets/fc_5_layers.jpg)
+#### FC 2 layers, hidden size 512
+![FC 2 layers, hidden size 512](assets/fc_hs_512.jpg)
 ### LSTM
-[LSTM 2 layers, hidden size 32](assets/lstm_2_layers.jpg)
-[LSTM 5 layers, hidden size 32](assets/lstm_5_layers.jpg)
-[LSTM 2 layers, hidden size 54](assets/lstm_hidden_size_64.jpg)
+#### LSTM 2 layers, hidden size 32
+![LSTM 2 layers, hidden size 32](assets/lstm_2_layers.jpg)
+#### LSTM 5 layers, hidden size 32
+![LSTM 5 layers, hidden size 32](assets/lstm_5_layers.jpg)
+#### LSTM 2 layers, hidden size 64
+![LSTM 2 layers, hidden size 54](assets/lstm_hidden_size_64.jpg)
 
 ## Выводы
 1. Классическим методам крайне трудно выявить комплексные закономерности для решения подобной задачи.
