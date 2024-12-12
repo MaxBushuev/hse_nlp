@@ -1,53 +1,44 @@
-### Run ML soultion
-    python ml.py
-### Run fully connected soultion
-    python fc.py
-### Run LSTM soultion
-    python LSTM.py
+# Lab 2
+Вся работа выполнена в ноутбуке 2_lab.ipynb
 
-## Results
-### ML
-| Model                      | Accuracy, % |
-|----------------------------|-------------|
-| Gaussian NB                | 34.1        |
-| Random forest, grid search | 47.3        |
-### Fully-connected
-| Model               | Accuracy, % |
-|---------------------|-------------|
-| FC 2 layers, hs 128 | 35.2        |
-| FC 5 layers, hs 128 | 35.2        |
-| FC 2 layers, hs 512 | 35.2        |
-### LSTM
-| Model                | Accuracy, % |
-|----------------------|-------------|
-| LSTM 2 layers, hs 32 | 78.2        |
-| LSTM 5 layers, hs 32 | 72.4        |
-| LSTM 2 layers, hs 64 | 88.4        |
+## Датасет
+https://github.com/AlexKly/Detailed-NER-Dataset-RU
 
-## Models training
-### Fully-Connected
-#### FC 2 layers, hidden size 128
-![FC 2 layers, hidden size 128](assets/fc_2_layers.jpg)
-#### FC 5 layers, hidden size 128
-![FC 5 layers, hidden size 128](assets/fc_5_layers.jpg)
-#### FC 2 layers, hidden size 512
-![FC 2 layers, hidden size 512](assets/fc_hs_512.jpg)
-### LSTM
-#### LSTM 2 layers, hidden size 32
-![LSTM 2 layers, hidden size 32](assets/lstm_2_layers.jpg)
-#### LSTM 5 layers, hidden size 32
-![LSTM 5 layers, hidden size 32](assets/lstm_5_layers.jpg)
-#### LSTM 2 layers, hidden size 64
-![LSTM 2 layers, hidden size 54](assets/lstm_hidden_size_64.jpg)
+## Модели
+### Rule-based
+В качестве rule-based решения использовали Natasha
+### Базовая
+https://huggingface.co/dslim/bert-base-NER
+### Обученная
+https://disk.yandex.ru/d/_EBKKsESs6RMHg (я честно хотел загрузить на huggingface, но не смог)
+
+## Train log
+
+| Step | Training Loss |
+| ----- | ----- | 
+| 500 | 0.331800 |
+| 1000 | 0.157500 |
+| 1500 | 0.101300 |
+| 2000 | 0.067800 |
+| 2500 | 0.045900 |
+| 3000 | 0.031100 |
+| 3500 | 0.023900 |
+| 4000 | 0.019700 |
+
+## Метрики
+| Model | Accuracy, % | Accuracy no "O", % |
+| ----- | ----- | ----- |
+| Natasha | 89.46 | 26.32 |
+| BERT base NER | 89.34 | 8.68 |
+| BERT base NER SFT | 86.28 | 30.29 |
 
 ## Выводы
-1. Классическим методам крайне трудно выявить комплексные закономерности для решения подобной задачи.
-2. TF-IDF векторизация работает хуже обучаемых эмбеддингов
-3. Посимвольная токенизация крайне плоха для решения подобных задач
-4. Полносвязная модель слишком слабая и простая для того, чтобы выявить подобные закономерности.
-5. LSTM учится куда лучше и стабильнее остальных моделей, особенно с увеличением hidden size
-6. Добавление слоев в LSTM не улучшает результат
+* Хорошо обученные нейросетевые решения, в частности трансформеры лучше rule-based решений
+* Необходима тренировка на релевантных данных (в первую очередь язык), модель натренированная на нерелевантных данных хуже rule-based решения
+* Encoder-only трансформеры показывают себя неплохо, имеет смысл попробовать генеративные encoder-decoder и decoder-only
+* Кажется, что accuracy по классам кроме "O" более репрезентативна
+
 ## Возможности для улучшения
-1. Более качественная токенизация, использование токенайзеров по словам/частям слов
-2. Тюнинг гиперпараметров LSTM
-3. Использование более совершенных моделей (encoder-only трансформеры)
+* Использования bert large вместо base
+* Претрейн модели на русском языке, либо файнтюн русскоязычного не ner bert
+* Использовать roberta или encoder-decoder, в частности t5
